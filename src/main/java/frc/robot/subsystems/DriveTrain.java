@@ -13,7 +13,7 @@ import frc.robot.RobotMap;
 import frc.robot.OI;
 //import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.Encoder;
+//import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWMTalonSRX;
 //import com.ctre.phoenix.motorcontrol.*;
 //import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -34,18 +34,19 @@ public class DriveTrain extends Subsystem {
 
   private PWMTalonSRX left = new PWMTalonSRX(RobotMap.leftDrivePort);
   private PWMTalonSRX right = new PWMTalonSRX(RobotMap.rightDrivePort);
-  private PWMTalonSRX arm = new PWMTalonSRX(RobotMap.armDrivePort);
-  private Encoder leftEncoder = new Encoder(RobotMap.leftEncoderA, RobotMap.leftEncoderB);
-  private Encoder rightEncoder = new Encoder(RobotMap.rightEncoderA, RobotMap.rightEncoderB);
+  private PWMTalonSRX lift = new PWMTalonSRX(RobotMap.liftPort);
+  private PWMTalonSRX arm = new PWMTalonSRX(RobotMap.armPort);
   
   private static DriveTrain drive;
-  private boolean inverted = false;
+  //private boolean inverted = false;
 
  // private double leftPowerY, rightPowerY;
  // private double leftPowerX, rightPowerX;
 
   private double leftPower, rightPower;
   private boolean downArm, upArm;
+  private boolean downLift, upLift;
+  private boolean CGArm;
 
   //public Joystick arcJoy;
 
@@ -54,10 +55,10 @@ public class DriveTrain extends Subsystem {
     right.setInverted(true);
     arm.setInverted(false);
 
-    leftEncoder.reset();
-    rightEncoder.reset();
-    leftEncoder.setDistancePerPulse(0.05);
-    rightEncoder.setDistancePerPulse(0.05);
+    //leftEncoder.reset();
+    //rightEncoder.reset();
+    //leftEncoder.setDistancePerPulse(0.05);
+    //rightEncoder.setDistancePerPulse(0.05);
     
     
     
@@ -87,6 +88,7 @@ public class DriveTrain extends Subsystem {
   }
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
+  /*
   public double returnDistance(){
     double leftDistance = leftEncoder.getDistance();
     double rightDistance = leftEncoder.getDistance();
@@ -96,7 +98,7 @@ public class DriveTrain extends Subsystem {
   public void printDistance(){
     System.out.println(returnDistance());
   }
-
+*/
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
@@ -111,6 +113,18 @@ public class DriveTrain extends Subsystem {
    // rightPowerX = OI.getArcJoy().getX();
     downArm = OI.getArcJoy().getRawButton(3);
     upArm = OI.getArcJoy().getRawButton(4);
+    downLift = OI.getArcJoy().getRawButton(5);
+    upLift = OI.getArcJoy().getRawButton(6);
+    CGArm = OI.getArcJoy().getRawButton(10);
+
+    if (CGArm) {
+      arm.set(0.2);
+      lift.set(0.2);
+    } else {
+      arm.set(-0.2);
+      lift.set(-0.2);
+    }
+    
 
     if (downArm) {
       arm.set(-0.2);
@@ -119,6 +133,15 @@ public class DriveTrain extends Subsystem {
     } else {
       arm.set(0);
     }
+
+    if(downLift) {
+      lift.set(-0.2);
+    } else if (upLift) {
+      lift.set(0.2);
+    } else {
+      arm.set(0);
+    }
+
 
       leftPower = OI.getArcJoy().getY();
       rightPower = OI.getArcJoy().getY();
@@ -131,5 +154,7 @@ public class DriveTrain extends Subsystem {
     }
 
     tankDrive(leftPower * 0.3, rightPower * 0.3);
+
+
   }
 }

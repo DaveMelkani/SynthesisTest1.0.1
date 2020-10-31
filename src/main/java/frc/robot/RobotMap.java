@@ -25,13 +25,11 @@ public class RobotMap {
   // public static int rangefinderModule = 1;
   public static int leftDrivePort = 0;
   public static int rightDrivePort = 1;
-  public static int armDrivePort = 2;
-  //public static int liftPort = 3;
+  public static int liftPort = 2;
+  public static int armPort = 4;
 
-  public static int leftEncoderA = 0;
-  public static int leftEncoderB = 1;
-  public static int rightEncoderA = 2;
-  public static int rightEncoderB = 3;
+
+   
 
   public static int arcJoystick = 0;
 }

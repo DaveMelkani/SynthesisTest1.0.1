@@ -22,9 +22,13 @@ public class OI {
   //public static JoystickButton leftBut;
   //public static JoystickButton rightBut;
   public static DriveTrain m_drive;
+  //public static Arm m_arm;
+  //public static Lift m_lift;
 
   public OI() {
     m_drive = DriveTrain.getInstance();
+   // m_arm = Arm.getInstance();
+   // m_lift = Lift.getInstance();
     arcJoy = new Joystick(RobotMap.arcJoystick);
   }
 
